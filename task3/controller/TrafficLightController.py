@@ -39,5 +39,14 @@ class TrafficLightController:
         self.init_timer()
 
     def show_info(self):
+        for index, traffic_light in enumerate(self.traffic_lights):
+            traffic_light.show_info(index)
+
+    def send_info(self):
+        json_file = "{nightMode: " + str(self.nightMode) + ", trafficLights: ["
         for traffic_light in self.traffic_lights:
-            traffic_light.show_info()
+            json_file += traffic_light.to_json() + ","
+        json_file = json_file[:-1]
+
+        json_file += "]}"
+        print(json_file)

@@ -17,10 +17,15 @@ class UserInterface:
         add_button = tkinter.Button(text='Add', name='add_control_widget')
         add_button.grid(row=self.currentRow, column=1, columnspan=1, rowspan=1)
         add_button.bind("<Button-1>", self.on_add_click)
-        add_button = tkinter.Button(text='Info', name='info_control_widget')
-        add_button.grid(row=self.currentRow, column=2, columnspan=1, rowspan=1)
-        add_button = tkinter.Button(text='Send', name='send_control_widget')
-        add_button.grid(row=self.currentRow, column=3, columnspan=1, rowspan=1)
+
+        info_button = tkinter.Button(text='Info', name='info_control_widget')
+        info_button.grid(row=self.currentRow, column=2, columnspan=1, rowspan=1)
+        info_button.bind("<Button-1>", self.on_info_click)
+
+        send_button = tkinter.Button(text='Send', name='send_control_widget')
+        send_button.grid(row=self.currentRow, column=3, columnspan=1, rowspan=1)
+        send_button.bind("<Button-1>", self.on_send_click)
+
         self.currentRow += 1
 
         self.update_ui()
@@ -33,10 +38,10 @@ class UserInterface:
         self.update_ui()
 
     def on_info_click(self, event):
-        pass
+        self.traffic_light_controller.show_info()
 
     def on_send_click(self, event):
-        pass
+        self.traffic_light_controller.send_info()
 
     def on_remove_click(self, index, event):
         self.traffic_light_controller.remove_traffic_light(index)
