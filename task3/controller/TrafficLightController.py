@@ -1,21 +1,42 @@
+import threading
+
 from task3.model.TrafficLight import TrafficLight
 
 
 class TrafficLightController:
-    nightMode = False
-    traffic_lights = list()
-    timer = None
 
     def __init__(self):
+        self.nightMode = False
+        self.traffic_lights = list()
+        self.timer = None
+        self.timer_callback = None
         self.traffic_lights.append(TrafficLight())
-        self.traffic_lights.append(TrafficLight())
-        self.traffic_lights.append(TrafficLight())
+        self.init_timer()
+
+    def set_timer_callback(self, timer_callback):
+        self.timer_callback = timer_callback
 
     def add_traffic_light(self):
         self.traffic_lights.append(TrafficLight())
 
     def remove_traffic_light(self, index):
         del self.traffic_lights[index]
+
+    def init_timer(self):
+        self.timer = threading.Timer(3, self.change_traffic_lights_state)
+        self.timer.setDaemon(True)
+        self.timer.start()
+
+    def change_traffic_lights_state(self):
+        for traffic_light in self.traffic_lights:
+            car_color = traffic_light.carColor
+            traffic_light.carColor = traffic_light.footerColor
+            traffic_light.footerColor = car_color
+
+        if self.timer_callback is not None:
+            self.timer_callback()
+
+        self.init_timer()
 
     def show_info(self):
         for traffic_light in self.traffic_lights:

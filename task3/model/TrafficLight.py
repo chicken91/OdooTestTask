@@ -2,10 +2,10 @@ from task3.model.Color import Color
 
 
 class TrafficLight:
-    carColor = Color.RED
-    footerColor = Color.RED
 
     def __init__(self):
+        self.carColor = Color.RED
+        self.footerColor = Color.GREEN
         pass
 
     def show_info(self):

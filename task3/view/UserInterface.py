@@ -7,13 +7,12 @@ from task3.view.FooterTrafficLightWidget import FooterTrafficLightWidget
 
 
 class UserInterface:
-    ui = None
-    traffic_light_controller = None
-    currentRow = 1
-    traffic_light_widgets = {TrafficLightType.CAR: [], TrafficLightType.FOOTER: []}
 
     def __init__(self, traffic_light_controller):
+        self.traffic_light_widgets = {TrafficLightType.CAR: [], TrafficLightType.FOOTER: []}
+        self.currentRow = 1
         self.traffic_light_controller = traffic_light_controller
+        self.traffic_light_controller.set_timer_callback(self.update_traffic_lights_state)
         self.ui = tkinter.Tk()
         add_button = tkinter.Button(text='Add', name='add_control_widget')
         add_button.grid(row=self.currentRow, column=1, columnspan=1, rowspan=1)
@@ -54,6 +53,12 @@ class UserInterface:
 
         for traffic_light in self.traffic_light_controller.traffic_lights:
             self.create_traffic_light()
+        self.update_traffic_lights_state()
+
+    def update_traffic_lights_state(self):
+        for index, traffic_light_data in enumerate(self.traffic_light_controller.traffic_lights):
+            self.traffic_light_widgets[TrafficLightType.CAR][index].set_color(traffic_light_data.carColor)
+            self.traffic_light_widgets[TrafficLightType.FOOTER][index].set_color(traffic_light_data.footerColor)
 
     def create_traffic_light(self):
         auto_traffic_light = CarTrafficLightWidget()
